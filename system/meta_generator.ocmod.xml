@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>Meta generator</name>
+    <code>meta_generator</code>
+    <version>1.0</version>
+    <author>Babaiev Ihor</author>
+
+    <file path="admin/controller/common/column_left.php">
+        <operation>
+            <search index="0">
+                <![CDATA[$blog = array();]]>
+            </search>
+            <add position="before">
+                <![CDATA[
+                  $data['menus'][] = array(
+                'id'       => 'menu-dashboard',
+                'icon'	   => 'fa-list-alt',
+                'name'	   => $this->language->get('text_meta_generator'),
+                'href'     => $this->url->link('extension/module/meta_generator', 'user_token=' . $this->session->data['user_token'], true),
+                'children' => array()
+            );
+            ]]>
+            </add>
+        </operation>
+    </file>
+
+    <file path="catalog/model/catalog/product.php">
+
+        <operation>
+            <search index="0">
+                <![CDATA[if ($query->num_rows) {]]>
+            </search>
+            <add position="before">
+                <![CDATA[
+                $this->load->model('extension/module/meta_generator');
+
+                $category_id = $this->model_extension_module_meta_generator->getProductMainCategoryId($product_id);
+                $this->model_extension_module_meta_generator->changeField($category_id, 'meta_h1', $product_id);
+            ]]>
+            </add>
+        </operation>
+
+        <operation>
+            <search index="0">
+                <![CDATA['meta_h1'	       => $query->row['meta_h1'],]]>
+            </search>
+            <add position="replace">
+                <![CDATA[
+                'meta_h1'	       => $this->model_extension_module_meta_generator->existsFormula($category_id, 'meta_h1') ? $this->model_extension_module_meta_generator->changeField($category_id, 'meta_h1', $product_id) : $query->row['meta_h1'],
+            ]]>
+            </add>
+        </operation>
+
+        <operation>
+            <search index="0">
+                <![CDATA['meta_description' => $query->row['meta_description'],]]>
+            </search>
+            <add position="replace">
+                <![CDATA[
+                'meta_description'	       => $this->model_extension_module_meta_generator->existsFormula($category_id, 'meta_description') ? $this->model_extension_module_meta_generator->changeField($category_id, 'meta_description', $product_id) : $query->row['meta_description'],
+            ]]>
+            </add>
+        </operation>
+
+        <operation>
+            <search index="0">
+                <![CDATA['meta_title'       => $query->row['meta_title'],]]>
+            </search>
+            <add position="replace">
+                <![CDATA[
+                'meta_title'	       => $this->model_extension_module_meta_generator->existsFormula($category_id, 'meta_title') ? $this->model_extension_module_meta_generator->changeField($category_id, 'meta_title', $product_id) : $query->row['meta_title'],
+            ]]>
+            </add>
+        </operation>
+
+    </file>
+
+
+</modification>
