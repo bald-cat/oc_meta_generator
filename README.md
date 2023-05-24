@@ -1,6 +1,6 @@
 # ru-ru
 
-Модуль для генерации мета-данных в карточке товара.
+Opencart 3 модуль для генерации мета-данных в карточке товара
 
 В данный момент можно генерировать такие поля в карточке товара: 
 
@@ -18,7 +18,7 @@
 
 # en-gb
 
-Module for generating meta-data in the product card.
+Opencart 3 module for generating meta-data in the product card.
 
 At the moment, you can generate the following fields in the product card:
 
